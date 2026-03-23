@@ -10,7 +10,12 @@ contacts without filling required information.
     "author": "Alphaqueb Consulting",
     "website": "https://alphaqueb.com",
     "license": "LGPL-3",
-    "depends": ["base"],
+    "depends": ["sale", "purchase"],
+    "assets": {
+        "web.assets_backend": [
+            "force_full_form_contact/static/src/js/many2one_force_form.js",
+        ],
+    },
     "installable": True,
     "auto_install": False,
 }
