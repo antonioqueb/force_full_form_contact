@@ -22,15 +22,10 @@ patch(Many2OneField.prototype, {
         const fieldName = this.props.name;
 
         if (TARGET_MODELS.includes(resModel) && PARTNER_FIELDS.includes(fieldName)) {
-            // Disable quick create
             props.quickCreate = null;
 
-            // Override "Create and Edit" to open FULL form
             const self = this;
             props.createAction = async (inputName) => {
-                const context = self.props.context || {};
-
-                // Open full form in dialog, wait for close
                 const resId = await new Promise((resolve) => {
                     self._actionService.doAction(
                         {
@@ -39,10 +34,8 @@ patch(Many2OneField.prototype, {
                             views: [[false, "form"]],
                             target: "new",
                             context: {
-                                ...context,
                                 default_name: inputName,
                                 default_is_company: true,
-                                form_view_initial_mode: "edit",
                                 ...(resModel === "purchase.order"
                                     ? { default_supplier_rank: 1 }
                                     : { default_customer_rank: 1 }),
@@ -61,7 +54,6 @@ patch(Many2OneField.prototype, {
                     );
                 });
 
-                // If a partner was created, read its name and update the field
                 if (resId) {
                     const [partner] = await self._orm.read(
                         "res.partner",
