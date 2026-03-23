@@ -11,11 +11,11 @@ contacts without filling required information.
     "website": "https://alphaqueb.com",
     "license": "LGPL-3",
     "depends": ["sale", "purchase"],
-    "assets": {
-        "web.assets_backend": [
-            "force_full_form_contact/static/src/js/many2one_force_form.js",
-        ],
-    },
+    # "assets": {
+    #     "web.assets_backend": [
+    #         "force_full_form_contact/static/src/js/many2one_force_form.js",
+    #     ],
+    # },
     "installable": True,
     "auto_install": False,
 }
