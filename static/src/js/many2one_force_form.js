@@ -11,6 +11,7 @@ patch(Many2OneField.prototype, {
     setup() {
         super.setup();
         this._actionService = useService("action");
+        this._orm = useService("orm");
     },
 
     get m2oProps() {
@@ -21,36 +22,58 @@ patch(Many2OneField.prototype, {
         const fieldName = this.props.name;
 
         if (TARGET_MODELS.includes(resModel) && PARTNER_FIELDS.includes(fieldName)) {
+            // Disable quick create
             props.quickCreate = null;
 
+            // Override "Create and Edit" to open FULL form
             const self = this;
             props.createAction = async (inputName) => {
                 const context = self.props.context || {};
-                await self._actionService.doAction(
-                    {
-                        type: "ir.actions.act_window",
-                        res_model: "res.partner",
-                        views: [[false, "form"]],
-                        target: "new",
-                        context: {
-                            ...context,
-                            default_name: inputName,
-                            default_is_company: true,
-                            ...(resModel === "purchase.order"
-                                ? { default_supplier_rank: 1 }
-                                : { default_customer_rank: 1 }),
+
+                // Open full form in dialog, wait for close
+                const resId = await new Promise((resolve) => {
+                    self._actionService.doAction(
+                        {
+                            type: "ir.actions.act_window",
+                            res_model: "res.partner",
+                            views: [[false, "form"]],
+                            target: "new",
+                            context: {
+                                ...context,
+                                default_name: inputName,
+                                default_is_company: true,
+                                form_view_initial_mode: "edit",
+                                ...(resModel === "purchase.order"
+                                    ? { default_supplier_rank: 1 }
+                                    : { default_customer_rank: 1 }),
+                            },
                         },
-                    },
-                    {
-                        onClose: async (result) => {
-                            if (result && result.res_id) {
-                                await self.props.record.update({
-                                    [fieldName]: [result.res_id, result.name || inputName],
-                                });
-                            }
-                        },
+                        {
+                            onClose: (infos) => {
+                                const id =
+                                    infos?.res_id ||
+                                    infos?.context?.active_id ||
+                                    infos?.id ||
+                                    false;
+                                resolve(id);
+                            },
+                        }
+                    );
+                });
+
+                // If a partner was created, read its name and update the field
+                if (resId) {
+                    const [partner] = await self._orm.read(
+                        "res.partner",
+                        [resId],
+                        ["display_name"]
+                    );
+                    if (partner) {
+                        self.props.record.update({
+                            [fieldName]: [resId, partner.display_name],
+                        });
                     }
-                );
+                }
             };
         }
 
