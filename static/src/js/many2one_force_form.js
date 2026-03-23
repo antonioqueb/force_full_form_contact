@@ -22,8 +22,15 @@ patch(Many2OneField.prototype, {
         const fieldName = this.props.name;
 
         if (TARGET_MODELS.includes(resModel) && PARTNER_FIELDS.includes(fieldName)) {
-            props.quickCreate = null;
+            // Disable quick create
+            if ("canQuickCreate" in props) {
+                props.canQuickCreate = false;
+            }
+            if ("quickCreate" in props) {
+                props.quickCreate = null;
+            }
 
+            // Override "Create and Edit" to open full form
             const self = this;
             props.createAction = async (inputName) => {
                 const resId = await new Promise((resolve) => {
