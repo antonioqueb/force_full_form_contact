@@ -2,11 +2,11 @@
     "name": "Force Full Form for Contact Creation",
     "version": "19.0.1.0.0",
     "category": "Sales",
-    "summary": "Disables quick-create for partners and forces full form view on Create and Edit",
+    "summary": "Blocks quick-create for contacts and redirects to full form",
     "description": """
-        - Disables quick-create (typing name and pressing Enter) for partner fields
-          in Sale Orders and Purchase Orders.
-        - Forces 'Create and Edit' to open the full contact form instead of a popup dialog.
+Blocks quick-create (name_create) for res.partner to prevent creating
+contacts without filling required information. Users must use the full
+contact form to create new partners.
     """,
     "author": "Alphaqueb Consulting",
     "website": "https://alphaqueb.com",
