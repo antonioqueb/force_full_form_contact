@@ -23,13 +23,10 @@ patch(Many2OneField.prototype, {
         if (TARGET_MODELS.includes(resModel) && PARTNER_FIELDS.includes(fieldName)) {
             props.quickCreate = null;
 
-            const actionService = this._actionService;
-            const record = this.props.record;
-            const fName = this.props.name;
-
+            const self = this;
             props.createAction = async (inputName) => {
-                const context = record.getFieldContext(fName);
-                await actionService.doAction({
+                const context = self.props.context || {};
+                await self._actionService.doAction({
                     type: "ir.actions.act_window",
                     res_model: "res.partner",
                     views: [[false, "form"]],
