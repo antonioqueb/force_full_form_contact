@@ -1,6 +1,6 @@
 {
     "name": "Force Full Form for Contact Creation",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "category": "Sales",
     "summary": "Disables quick-create for partners and forces full form view on Create and Edit",
     "description": """
