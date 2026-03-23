@@ -8,12 +8,9 @@ class ResPartner(models.Model):
 
     @api.model
     def name_create(self, name):
-        """Block quick-create of contacts. Forces full form usage."""
-        if self.env.context.get("force_full_form_contact_allowed"):
-            return super().name_create(name)
-
-        raise UserError(_(
-            "No es posible crear contactos de forma rápida.\n\n"
-            "Por favor utilice 'Crear y editar' para abrir el formulario "
-            "completo del contacto, o créelo desde el menú de Contactos."
-        ))
+        if self.env.context.get("from_sale_order"):
+            raise UserError(_(
+                "Para crear un nuevo contacto, utilice la opción "
+                "'Crear y editar...' del menú desplegable."
+            ))
+        return super().name_create(name)

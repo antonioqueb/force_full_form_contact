@@ -1,0 +1,5 @@
+/* Hide "Crear X" quick-create option from partner many2one dropdowns.
+   The option "Crear y editar..." (o_m2o_dropdown_option_create_edit) stays visible. */
+.o_m2o_dropdown_option_create:not(.o_m2o_dropdown_option_create_edit) {
+    display: none !important;
+}
