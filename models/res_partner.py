@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from odoo import models, _
+from odoo import api, models, _
 from odoo.exceptions import UserError
 
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    @api.model
     def name_create(self, name):
         """Block quick-create of contacts. Forces full form usage."""
         if self.env.context.get("force_full_form_contact_allowed"):
