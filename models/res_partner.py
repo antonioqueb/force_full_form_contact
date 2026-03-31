@@ -8,12 +8,12 @@ class ResPartner(models.Model):
 
     @api.model
     def name_create(self, name):
-        if self.env.context.get("from_sale_order"):
-            raise UserError(_(
-                "Para crear un nuevo contacto, utilice la opción "
-                "'Crear y editar...' del menú desplegable."
-            ))
-        return super().name_create(name)
+        """Bloquear quick-create de partners desde órdenes de venta/compra."""
+        # Siempre bloquear name_create para partners — forzar formulario completo
+        raise UserError(_(
+            "Para crear un nuevo contacto, utilice la opción "
+            "'Crear y editar...' del menú desplegable."
+        ))
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -22,5 +22,4 @@ class ResPartner(models.Model):
             for vals in vals_list:
                 if not vals.get('customer_rank'):
                     vals['customer_rank'] = self.env.context['default_customer_rank']
-        records = super().create(vals_list)
-        return records
+        return super().create(vals_list)
