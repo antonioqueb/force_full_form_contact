@@ -1,6 +1,6 @@
 {
     "name": "Force Full Form for Contact Creation",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Sales",
     "summary": "Hides quick-create for contacts, forces Create and Edit",
     "description": """
@@ -12,6 +12,9 @@ by other means, a friendly error message is shown.
     "website": "https://alphaqueb.com",
     "license": "LGPL-3",
     "depends": ["sale", "purchase"],
+    "data": [
+        "views/sale_order_views.xml",
+    ],
     "assets": {
         "web.assets_backend": [
             "force_full_form_contact/static/src/css/hide_quick_create.css",
