@@ -8,7 +8,13 @@ class ResPartner(models.Model):
 
     @api.model
     def name_create(self, name):
-        """Bloquear quick-create de partners — forzar formulario completo."""
+        """Bloquear quick-create de partners — forzar formulario completo.
+
+        Las vistas que sí permiten alta rápida (p. ej. el tarifario, donde
+        el contacto se etiqueta solo) pasan force_full_form_skip en su context.
+        """
+        if self.env.context.get('force_full_form_skip'):
+            return super().name_create(name)
         raise UserError(_(
             "Para crear un nuevo contacto, utilice la opción "
             "'Crear y editar...' del menú desplegable."

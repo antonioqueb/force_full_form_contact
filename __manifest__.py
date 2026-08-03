@@ -1,6 +1,6 @@
 {
     "name": "Force Full Form for Contact Creation",
-    "version": "19.0.1.0.1",
+    "version": "19.0.1.1.0",
     "category": "Sales",
     "summary": "Hides quick-create for contacts, forces Create and Edit",
     "description": """
